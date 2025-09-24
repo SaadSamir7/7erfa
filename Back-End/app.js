@@ -1,47 +1,47 @@
-const express = require('express');
-const morgan = require('morgan');
-const rateLimit = require('express-rate-limit');
-const helmet = require('helmet');
-const path = require('path');
-const mongoSanitize = require('express-mongo-sanitize');
-const xss = require('xss-clean');
-const hpp = require('hpp');
-const cors = require('cors');
+const express = require("express");
+const morgan = require("morgan");
+const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
+const path = require("path");
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
+const hpp = require("hpp");
+const cors = require("cors");
 
-const AppError = require('./utils/appError');
-const globalErrorhandler = require('./controllers/errorController');
-const customerRouter = require('./routes/customerRoutes');
-const workerRouter = require('./routes/workerRoutes');
-const authRouter = require('./routes/authRoutes');
-const reviewRouter = require('./routes/reviewRoutes');
-const orderRouter = require('./routes/orderRoutes');
+const AppError = require("./utils/appError");
+const globalErrorhandler = require("./controllers/errorController");
+const customerRouter = require("./routes/customerRoutes");
+const workerRouter = require("./routes/workerRoutes");
+const authRouter = require("./routes/authRoutes");
+const reviewRouter = require("./routes/reviewRoutes");
+const orderRouter = require("./routes/orderRoutes");
 
 const app = express();
 
 //1) GLOBAL MIDDLEWARES
 // i want to add puplic as my html & css landing page in my server
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   cors({
-    origin: '*', // Allow your front-end origin
-    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'], // Allow specific methods
-    allowedHeaders: ['Content-Type', 'Authorization'], // Allow headers
-  }),
+    origin: "*", // Allow your front-end origin
+    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"], // Allow specific methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow headers
+  })
 );
 
-app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
+app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
 console.log(__dirname);
 
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views'));
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
 
 //Set Security - HTTP Headers
 app.use(helmet());
 
 //Development logging
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev')); // this is called logger
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev")); // this is called logger
 }
 
 // Limit request from same IP
@@ -54,7 +54,7 @@ if (process.env.NODE_ENV === 'development') {
 //app.use('/api', limiter);
 
 //Body parser, reading data from body into req.body
-app.use(express.json({ limit: '10kb' })); // middleware
+app.use(express.json({ limit: "10kb" })); // middleware
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
@@ -79,25 +79,35 @@ app.use(xss());
 //Test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  // console.log(req.headers);
+  console.log(`${req.method} ${req.path} - ${req.requestTime}`);
   next();
 });
 
 //3) Routes
-app.get('/', (req, res) => {
-  res.status(200).render('base', {
-    title: 'My Landing Page',
-    message: 'Welcome to the best Express app!',
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "7erfa Backend API is running!",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV,
   });
 });
 
-app.use('/api/v1/customers', customerRouter);
-app.use('/api/v1/workers', workerRouter);
-app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/reviews', reviewRouter);
-app.use('/api/v1/orders', orderRouter);
+// Health check endpoint for Railway
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "healthy",
+    timestamp: new Date().toISOString(),
+  });
+});
 
-app.all('*', (req, res, next) => {
+app.use("/api/v1/customers", customerRouter);
+app.use("/api/v1/workers", workerRouter);
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/reviews", reviewRouter);
+app.use("/api/v1/orders", orderRouter);
+
+app.all("*", (req, res, next) => {
   // res.status(404).json({
   //   status: 'fail',
   //   message: `Can't find ${req.originalUrl} on this server!`,
