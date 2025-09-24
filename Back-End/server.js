@@ -2,31 +2,27 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
 process.on("uncaughtException", (err) => {
-  // listting to event
   console.log("UNCAUGHT EXCEPTION! Shutting down...");
   console.log(err.name, err.message);
   process.exit(1);
 });
 
-// Try to load environment variables from different sources
+// Load environment variables
 console.log("Loading environment variables...");
 console.log("Current working directory:", process.cwd());
 console.log("NODE_ENV:", process.env.NODE_ENV);
 console.log("RAILWAY_ENVIRONMENT:", process.env.RAILWAY_ENVIRONMENT);
 
-// Try to load production config first (for Railway deployment)
 dotenv.config({ path: "./config.production.env" });
-// Then try local development config (won't override existing vars)
 dotenv.config({ path: "./config.env" });
 
 console.log("Environment variables loaded");
 console.log("DATABASE defined:", !!process.env.DATABASE);
 console.log("DATABASE_PASSWORD defined:", !!process.env.DATABASE_PASSWORD);
+
 const app = require("./app");
 
-// console.log(process.env);
-
-// database connection
+// Database connection
 let DB;
 
 if (process.env.DATABASE_URL) {
@@ -38,11 +34,14 @@ if (process.env.DATABASE_URL) {
     "<PASSWORD>",
     process.env.DATABASE_PASSWORD
   );
+  // Ensure mongodb+srv format
+  if (!DB.startsWith("mongodb+srv://")) {
+    DB = DB.replace(/^mongodb:\/\//, "mongodb+srv://");
+  }
 } else {
   console.error(
     "Neither DATABASE_URL nor DATABASE/DATABASE_PASSWORD environment variables are defined"
   );
-  console.error("Please set up your database connection in Railway dashboard");
   process.exit(1);
 }
 
@@ -50,15 +49,20 @@ mongoose
   .connect(DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
   })
   .then(() => {
-    console.log("DB connetion successful!");
+    console.log("DB connection successful!");
+  })
+  .catch((err) => {
+    console.error("DB connection error:", err.message);
   });
 
-// server
+// Health check route for Railway
+app.get("/", (req, res) => {
+  res.send("🚀 Backend is running successfully on Railway!");
+});
 
+// Server
 const portnumber = process.env.PORT || 3000;
 console.log("Starting server...");
 console.log("PORT from environment:", process.env.PORT);
@@ -70,7 +74,6 @@ const server = app.listen(portnumber, "0.0.0.0", () => {
 });
 
 process.on("unhandledRejection", (err) => {
-  // listting to event
   console.log(err.name, err.message);
   console.log("UNHANDLED REJECTION! Shutting down...");
   server.close(() => {

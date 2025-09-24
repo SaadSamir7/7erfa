@@ -98,8 +98,8 @@ app.get("/", (req, res) => {
       workers: "/api/v1/workers",
       auth: "/api/v1/auth",
       reviews: "/api/v1/reviews",
-      orders: "/api/v1/orders"
-    }
+      orders: "/api/v1/orders",
+    },
   });
 });
 
@@ -109,7 +109,7 @@ app.get("/health", (req, res) => {
     status: "healthy",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    memory: process.memoryUsage()
+    memory: process.memoryUsage(),
   });
 });
 
@@ -121,11 +121,11 @@ app.get("/api/v1", (req, res) => {
     version: "1.0.0",
     endpoints: {
       customers: "/api/v1/customers",
-      workers: "/api/v1/workers", 
+      workers: "/api/v1/workers",
       auth: "/api/v1/auth",
       reviews: "/api/v1/reviews",
-      orders: "/api/v1/orders"
-    }
+      orders: "/api/v1/orders",
+    },
   });
 });
 
