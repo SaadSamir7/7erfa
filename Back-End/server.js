@@ -47,8 +47,12 @@ if (process.env.DATABASE_URL) {
 }
 
 mongoose
-  .connect(DB)
-  // Modern mongoose versions don't need these deprecated options
+  .connect(DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  })
   .then(() => {
     console.log("DB connetion successful!");
   });
