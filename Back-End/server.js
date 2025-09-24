@@ -57,11 +57,6 @@ mongoose
     console.error("DB connection error:", err.message);
   });
 
-// Health check route for Railway
-app.get("/", (req, res) => {
-  res.send("🚀 Backend is running successfully on Railway!");
-});
-
 // Server
 const portnumber = process.env.PORT || 3000;
 console.log("Starting server...");
