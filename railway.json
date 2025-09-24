@@ -1,11 +1,11 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
-    "builder": "nixpacks",
-    "buildCommand": "cd Back-End && npm install"
+    "buildCommand": "cd Front-End && npm install && npm run build",
+    "watchPatterns": ["Front-End/**"]
   },
   "deploy": {
-    "startCommand": "cd Back-End && NODE_ENV=production npm start",
+    "startCommand": "cd Front-End && npm start",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
