@@ -87,9 +87,19 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.status(200).json({
     status: "success",
-    message: "7erfa Backend API is running!",
+    message: "7erfa Backend API is running! 🚀",
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV,
+    version: "1.0.0",
+    endpoints: {
+      health: "/health",
+      api: "/api/v1",
+      customers: "/api/v1/customers",
+      workers: "/api/v1/workers",
+      auth: "/api/v1/auth",
+      reviews: "/api/v1/reviews",
+      orders: "/api/v1/orders"
+    }
   });
 });
 
@@ -98,6 +108,24 @@ app.get("/health", (req, res) => {
   res.status(200).json({
     status: "healthy",
     timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    memory: process.memoryUsage()
+  });
+});
+
+// API info endpoint
+app.get("/api/v1", (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "7erfa API v1",
+    version: "1.0.0",
+    endpoints: {
+      customers: "/api/v1/customers",
+      workers: "/api/v1/workers", 
+      auth: "/api/v1/auth",
+      reviews: "/api/v1/reviews",
+      orders: "/api/v1/orders"
+    }
   });
 });
 

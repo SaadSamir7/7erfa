@@ -47,13 +47,8 @@ if (process.env.DATABASE_URL) {
 }
 
 mongoose
-  .connect(DB, {
-    // return a promise
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-  })
+  .connect(DB)
+  // Modern mongoose versions don't need these deprecated options
   .then(() => {
     console.log("DB connetion successful!");
   });
