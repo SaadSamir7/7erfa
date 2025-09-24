@@ -1,0 +1,12 @@
+{
+  "name": "7erfa-monorepo",
+  "version": "1.0.0",
+  "description": "7erfa platform with backend and frontend",
+  "scripts": {
+    "start": "cd Back-End && npm start",
+    "postinstall": "cd Back-End && npm install"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
