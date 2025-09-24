@@ -9,19 +9,19 @@ process.on("uncaughtException", (err) => {
 });
 
 // Try to load environment variables from different sources
-console.log('Loading environment variables...');
-console.log('Current working directory:', process.cwd());
-console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('RAILWAY_ENVIRONMENT:', process.env.RAILWAY_ENVIRONMENT);
+console.log("Loading environment variables...");
+console.log("Current working directory:", process.cwd());
+console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log("RAILWAY_ENVIRONMENT:", process.env.RAILWAY_ENVIRONMENT);
 
 // Try to load production config first (for Railway deployment)
 dotenv.config({ path: "./config.production.env" });
 // Then try local development config (won't override existing vars)
 dotenv.config({ path: "./config.env" });
 
-console.log('Environment variables loaded');
-console.log('DATABASE defined:', !!process.env.DATABASE);
-console.log('DATABASE_PASSWORD defined:', !!process.env.DATABASE_PASSWORD);
+console.log("Environment variables loaded");
+console.log("DATABASE defined:", !!process.env.DATABASE);
+console.log("DATABASE_PASSWORD defined:", !!process.env.DATABASE_PASSWORD);
 const app = require("./app");
 
 // console.log(process.env);
