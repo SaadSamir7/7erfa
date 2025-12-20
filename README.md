@@ -123,10 +123,8 @@ This is a full-stack application consisting of two main components:
 | **Tailwind CSS**    | Styling            | 3.4.16  |
 | **React Router**    | Routing            | 6.28.0  |
 | **React Query**     | State Management   | 5.74.4  |
-| **Axios**           | HTTP Client        | 1.7.9   |
 | **Framer Motion**   | Animations         | 11.15.0 |
 | **React Hook Form** | Form Management    | 7.62.0  |
-| **Firebase**        | Authentication     | 11.4.0  |
 
 ### Backend Technologies
 
