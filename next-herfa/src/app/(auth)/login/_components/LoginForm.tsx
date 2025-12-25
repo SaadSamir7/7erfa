@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { login } from "@/lib/actions/auth";
@@ -12,12 +11,7 @@ export default function LoginForm() {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="w-full max-w-md"
-        >
+        <div className="w-full max-w-md">
             <div className="rounded-xl bg-gradient-to-r from-main-50/50 to-main-100/50 p-1 dark:from-main-900/20 dark:to-main-800/20">
                 <form
                     className="space-y-6 rounded-lg border border-white/20 bg-white p-8 shadow-xl backdrop-blur-sm dark:bg-gray-800"
@@ -28,12 +22,7 @@ export default function LoginForm() {
                     <div className="relative space-y-4 text-center">
                         <div className="relative z-10">
                             {/* Logo/Icon Section */}
-                            <motion.div
-                                initial={{ scale: 0.8, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                transition={{ delay: 0.2, duration: 0.5 }}
-                                className="mb-4 flex justify-center"
-                            >
+                            <div className="mb-4 flex justify-center">
                                 <div className="relative">
                                     <div className="h-16 w-16 rounded-2xl bg-gradient-to-r from-main-500 to-main-600 p-3 shadow-xl">
                                         <div className="flex h-full w-full items-center justify-center rounded-xl bg-white/20">
@@ -42,38 +31,23 @@ export default function LoginForm() {
                                     </div>
                                     <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-main-400 to-main-600 opacity-0 blur transition-opacity duration-300 group-hover:opacity-30"></div>
                                 </div>
-                            </motion.div>
+                            </div>
 
                             {/* Title */}
-                            <motion.h3
-                                initial={{ y: 20, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                transition={{ delay: 0.3, duration: 0.5 }}
-                                className="mb-2 bg-gradient-to-r from-gray-800 via-main-600 to-main-700 bg-clip-text text-4xl font-extrabold text-transparent dark:from-white dark:via-main-300 dark:to-main-400"
-                            >
+                            <h3 className="mb-2 bg-gradient-to-r from-gray-800 via-main-600 to-main-700 bg-clip-text text-4xl font-extrabold text-transparent dark:from-white dark:via-main-300 dark:to-main-400">
                                 Welcome Back
-                            </motion.h3>
+                            </h3>
 
                             {/* Subtitle */}
-                            <motion.p
-                                initial={{ y: 20, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                transition={{ delay: 0.4, duration: 0.5 }}
-                                className="font-medium text-gray-600 dark:text-gray-300"
-                            >
+                            <p className="font-medium text-gray-600 dark:text-gray-300">
                                 Sign in to access your{" "}
                                 <span className="font-semibold text-main-600 dark:text-main-400">
                                     dashboard
                                 </span>
-                            </motion.p>
+                            </p>
 
                             {/* Decorative divider */}
-                            <motion.div
-                                initial={{ scaleX: 0, opacity: 0 }}
-                                animate={{ scaleX: 1, opacity: 1 }}
-                                transition={{ delay: 0.5, duration: 0.6 }}
-                                className="mx-auto mb-2 mt-6 h-1 w-24 rounded-full bg-gradient-to-r from-transparent via-main-500 to-transparent"
-                            ></motion.div>
+                            <div className="mx-auto mb-2 mt-6 h-1 w-24 rounded-full bg-gradient-to-r from-transparent via-main-500 to-transparent"></div>
                         </div>
                     </div>
 
@@ -178,6 +152,6 @@ export default function LoginForm() {
                     </div>
                 </form>
             </div>
-        </motion.div>
+        </div>
     );
 }
