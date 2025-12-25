@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { Manrope, Bruno_Ace_SC, Cairo, Roboto } from "next/font/google";
+import { ThemeProvider } from "@/hooks/theme-provider";
 
 export const manrope = Manrope({
     subsets: ["latin"],
@@ -51,11 +52,15 @@ export default function RootLayout({
     return (
         <html
             lang="en"
-            className={`scroll-smooth ${brunoAceSC.variable} ${cairo.variable} ${manrope.variable}`}>
+            className={`scroll-smooth ${brunoAceSC.variable} ${cairo.variable} ${manrope.variable}`}
+        >
             <body
                 className={`${roboto.className} antialiased`}
-                suppressHydrationWarning>
-                <SessionProvider>{children}</SessionProvider>
+                suppressHydrationWarning
+            >
+                <SessionProvider>
+                    <ThemeProvider>{children}</ThemeProvider>
+                </SessionProvider>
             </body>
         </html>
     );
