@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { LogOut } from "lucide-react";
 import { logout } from "@/lib/actions/auth";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -71,7 +72,14 @@ function Navbar() {
 }
 
 function Buttons() {
-    const { data: session, status } = useSession();
+    const { data: session, status, update } = useSession();
+    const router = useRouter();
+
+    const handleLogout = async () => {
+        await logout();
+        await update();
+        router.refresh();
+    };
 
     // Show loading placeholder or empty space while checking authentication
     if (status === "loading") {
@@ -96,7 +104,7 @@ function Buttons() {
                 </Link>
                 <button
                     className="cursor-pointer rounded-full bg-transparent px-4 py-3 text-base font-semibold text-main-transparent transition-all hover:scale-105 hover:bg-white hover:text-main-500"
-                    onClick={() => logout()}
+                    onClick={handleLogout}
                 >
                     <LogOut size={18} />
                 </button>
