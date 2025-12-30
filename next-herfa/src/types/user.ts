@@ -1,23 +1,37 @@
-export interface IUser {
+interface MongoDocument {
+    _id: string;
+    __v?: number;
+}
+
+interface BaseUser extends MongoDocument {
     id: string;
-    _id?: string;
-    name?: string;
-    email?: string;
-    phoneNumber?: string;
-    city?: string;
-    role?: "worker" | "customer";
+    name: string;
+    email: string;
+    phoneNumber: string;
+    city: string;
+    role: "worker" | "customer";
     image?: string;
+    imageUpdatedAt?: number;
     active?: boolean;
-    // worker values
+    emailVerified?: Date | null;
+}
+
+export interface CustomerUser extends BaseUser {
+    role: "customer";
+}
+
+export interface WorkerUser extends BaseUser {
+    role: "worker";
+
     ratingsAverage?: number;
     ratingsQuantity?: number;
     skill?: string;
     yearsOfExperience?: number;
     hourlyRate?: number;
     bio?: string;
-    __v?: number;
-    emailVerified?: Date | null;
 }
+
+export type IUser = CustomerUser | WorkerUser;
 
 export interface ILoginResponse {
     status: "success" | "fail" | "error";
