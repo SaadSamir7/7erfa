@@ -17,6 +17,7 @@
     --color-brand--light: #fffceab3;
     --color-black: #242a2e;
     --color-white: #fff;
+    color-scheme: light dark;
 }
 
 * {

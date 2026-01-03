@@ -2,27 +2,19 @@
 import { logout } from "@/lib/actions/auth";
 import { LogOut, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+import { IUser } from "@/types/user";
 
 const VITE_API_URL = process.env.VITE_API_URL;
 
-function DashboardHeader() {
-    const { data: session, update } = useSession();
-    const user = session?.user;
-    const router = useRouter();
-
+function DashboardHeader({ user }: { user?: IUser }) {
     const { theme, setTheme } = useTheme();
+    const profileUrl =
+        user?.role === "worker"
+            ? `/worker-dashboard/profile`
+            : `/dashboard/profile`;
 
-    function handleProfileClick() {
-        redirect("/worker-dashboard/profile");
-    }
-    const handleLogout = async () => {
-        await logout();
-        await update();
-        router.refresh();
-    };
     return (
         <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 shadow-sm backdrop-blur-sm dark:border-gray-800 dark:bg-gray-900/95">
             <div className="ml-auto flex h-16 max-w-7xl items-center justify-end px-6">
@@ -35,16 +27,13 @@ function DashboardHeader() {
                         }
                         className="rounded-lg p-2 text-gray-600 transition-all duration-200 hover:bg-gray-50 hover:text-main-600 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-main-400"
                     >
-                        {theme === "dark" ? (
-                            <Sun size={20} />
-                        ) : (
-                            <Moon size={20} />
-                        )}
+                        <Sun size={20} className="hidden dark:inline-block" />
+                        <Moon size={20} className="dark:hidden" />
                     </button>
 
                     {/* User Profile */}
                     <div
-                        onClick={handleProfileClick}
+                        onClick={() => redirect(profileUrl)}
                         className="flex cursor-pointer items-center space-x-3 rounded-lg bg-gray-50 px-3 py-2 transition-all duration-200 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700"
                     >
                         {/* User Info */}
@@ -81,7 +70,7 @@ function DashboardHeader() {
 
                     {/* Logout Button */}
                     <button
-                        onClick={handleLogout}
+                        onClick={logout}
                         className="rounded-lg p-2 text-gray-600 transition-all duration-200 hover:scale-105 hover:bg-red-50 hover:text-red-600 dark:text-gray-400 dark:hover:bg-red-900/20 dark:hover:text-red-400"
                         title="Logout"
                     >

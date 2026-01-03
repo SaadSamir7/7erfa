@@ -53,11 +53,9 @@ export default function RootLayout({
         <html
             lang="en"
             className={`scroll-smooth ${brunoAceSC.variable} ${cairo.variable} ${manrope.variable}`}
+            suppressHydrationWarning
         >
-            <body
-                className={`${roboto.className} antialiased`}
-                suppressHydrationWarning
-            >
+            <body className={`${roboto.className} antialiased`}>
                 <SessionProvider>
                     <ThemeProvider>{children}</ThemeProvider>
                 </SessionProvider>
