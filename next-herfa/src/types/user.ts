@@ -35,6 +35,7 @@ export type IUser = CustomerUser | WorkerUser;
 
 export interface ILoginResponse {
     status: "success" | "fail" | "error";
-    token: string;
-    data: { user: IUser };
+    massage?: string;
+    token?: string;
+    data?: { user: IUser };
 }
