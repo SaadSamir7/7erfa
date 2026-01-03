@@ -1,13 +1,7 @@
-const VITE_API_URL = process.env.VITE_API_URL;
-const API_URL = `${VITE_API_URL}/api/v1`;
+const BACKEND_URL = process.env.BACKEND_URL;
 
-export interface LoginBody {
-    email: string;
-    password: string;
-}
-
-export async function login(data: LoginBody) {
-    const res = await fetch(`${API_URL}/auth/login`, {
+export async function login(data: { email: string; password: string }) {
+    const res = await fetch(`${BACKEND_URL}/auth/login`, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -21,12 +15,12 @@ export async function login(data: LoginBody) {
     return res.json();
 }
 
-export async function getMyAccount() {
-    const res = await fetch(`${API_URL}/auth/me`, {
+export async function getMyProfile(token: string) {
+    const res = await fetch(`${BACKEND_URL}/auth/me`, {
         method: "GET",
         headers: {
             "Content-type": "application/json; charset=UTF-8",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
         },
     });
 

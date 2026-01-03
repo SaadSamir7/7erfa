@@ -10,6 +10,7 @@ interface BaseUser extends MongoDocument {
     phoneNumber: string;
     city: string;
     role: "worker" | "customer";
+    token?: string;
     image?: string;
     imageUpdatedAt?: number;
     active?: boolean;
@@ -22,7 +23,6 @@ export interface CustomerUser extends BaseUser {
 
 export interface WorkerUser extends BaseUser {
     role: "worker";
-
     ratingsAverage?: number;
     ratingsQuantity?: number;
     skill?: string;

@@ -1,4 +1,6 @@
+"use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation"; // ✅ استخدم useRouter
 import {
     User,
     Mail,
@@ -12,49 +14,69 @@ import {
     ArrowLeft,
 } from "lucide-react";
 import { WorkerUser } from "@/types/user";
-import { redirect } from "next/navigation";
+import { updateWorkerProfile } from "@/lib/actions/updateWorkerProfile";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 interface ProfileFormProps {
     user: WorkerUser;
     userType: "worker" | "customer";
 }
 
-async function updateProfile(formData: FormData) {
-    "use server";
+export default function ProfileForm({ user, userType }: ProfileFormProps) {
+    const { update, status } = useSession();
+    const router = useRouter();
+    const [error, setError] = useState<string | null>(null);
+    const loading = status === "loading";
 
-    // Extract form data
-    const data = {
-        name: formData.get("name"),
-        email: formData.get("email"),
-        phoneNumber: formData.get("phoneNumber"),
-        city: formData.get("city"),
-        hourlyRate: formData.get("hourlyRate"),
-        yearsOfExperience: formData.get("yearsOfExperience"),
-        bio: formData.get("bio"),
-        image: formData.get("image"),
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setError(null);
+
+        const formData = new FormData(e.currentTarget);
+
+        try {
+            const result = await updateWorkerProfile(formData, user!.token!);
+
+            if (!result.success) {
+                setError(result.error || "Failed to update profile");
+                return;
+            }
+
+            // Update session with new data directly (avoids extra API call)
+            await update({
+                user: {
+                    ...user,
+                    ...result.data,
+                    token: user.token,
+                },
+            });
+
+            router.push("/worker-dashboard/profile");
+        } catch (error: unknown) {
+            console.error("Error:", error);
+            setError(
+                error instanceof Error
+                    ? error.message
+                    : "An unexpected error occurred"
+            );
+        }
     };
 
-    console.log("Form Data to be submitted:", data);
-    redirect("/worker-dashboard/profile");
-
-    // TODO: Make API call to update profile
-    // const response = await fetch(`${process.env.BACKEND_URL}/api/profile`, {
-    //     method: 'PATCH',
-    //     body: formData,
-    // });
-
-    // After successful update, redirect back to profile
-}
-
-export default function ProfileForm({ user, userType }: ProfileFormProps) {
     return (
         <div className="mt-8">
             <div className="rounded-xl bg-gradient-to-r from-main-50/50 to-main-100/50 p-1 dark:from-main-900/20 dark:to-main-800/20">
                 <form
-                    action={updateProfile}
+                    onSubmit={handleSubmit}
                     className="space-y-6 rounded-lg bg-white p-6 dark:bg-gray-800"
-                    encType="multipart/form-data"
                 >
+                    {/* ✅ Error Message */}
+                    {error && (
+                        <div className="rounded-lg bg-red-50 p-4 text-red-800 dark:bg-red-900/20 dark:text-red-200">
+                            ❌ {error}
+                        </div>
+                    )}
+
                     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                         {/* Full Name */}
                         <div className="space-y-2">
@@ -67,7 +89,9 @@ export default function ProfileForm({ user, userType }: ProfileFormProps) {
                                 type="text"
                                 name="name"
                                 defaultValue={user?.name || ""}
-                                className="w-full rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 focus:border-main-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-400/20 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100"
+                                required
+                                disabled={loading}
+                                className="w-full rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 focus:border-main-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-400/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100"
                             />
                         </div>
 
@@ -82,7 +106,8 @@ export default function ProfileForm({ user, userType }: ProfileFormProps) {
                                 type="text"
                                 name="city"
                                 defaultValue={user?.city || ""}
-                                className="w-full rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 focus:border-main-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-400/20 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100"
+                                disabled={loading}
+                                className="w-full rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 focus:border-main-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-400/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100"
                             />
                         </div>
 
@@ -97,7 +122,9 @@ export default function ProfileForm({ user, userType }: ProfileFormProps) {
                                 type="email"
                                 name="email"
                                 defaultValue={user?.email || ""}
-                                className="w-full rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 focus:border-main-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-400/20 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100"
+                                required
+                                disabled={loading}
+                                className="w-full rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 focus:border-main-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-400/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100"
                             />
                         </div>
 
@@ -112,7 +139,8 @@ export default function ProfileForm({ user, userType }: ProfileFormProps) {
                                 type="tel"
                                 name="phoneNumber"
                                 defaultValue={user?.phoneNumber || ""}
-                                className="w-full rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 focus:border-main-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-400/20 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100"
+                                disabled={loading}
+                                className="w-full rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 focus:border-main-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-400/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100"
                             />
                         </div>
 
@@ -130,7 +158,8 @@ export default function ProfileForm({ user, userType }: ProfileFormProps) {
                                         type="number"
                                         name="hourlyRate"
                                         defaultValue={user?.hourlyRate || ""}
-                                        className="w-full rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 focus:border-main-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-400/20 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100"
+                                        disabled={loading}
+                                        className="w-full rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 focus:border-main-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-400/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100"
                                     />
                                 </div>
 
@@ -147,7 +176,8 @@ export default function ProfileForm({ user, userType }: ProfileFormProps) {
                                         defaultValue={
                                             user?.yearsOfExperience || ""
                                         }
-                                        className="w-full rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 focus:border-main-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-400/20 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100"
+                                        disabled={loading}
+                                        className="w-full rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 focus:border-main-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-400/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100"
                                     />
                                 </div>
                             </>
@@ -167,7 +197,8 @@ export default function ProfileForm({ user, userType }: ProfileFormProps) {
                                 rows={4}
                                 placeholder="Tell us about your professional experience and expertise..."
                                 defaultValue={user?.bio || ""}
-                                className="w-full resize-none rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 focus:border-main-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-500/20 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100"
+                                disabled={loading}
+                                className="w-full resize-none rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 focus:border-main-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100"
                             />
                         </div>
                     )}
@@ -184,12 +215,11 @@ export default function ProfileForm({ user, userType }: ProfileFormProps) {
                                 type="file"
                                 name="image"
                                 accept="image/*"
-                                className="w-full rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 file:mr-4 file:rounded-lg file:border-0 file:bg-main-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-main-700 hover:file:bg-main-100 focus:border-main-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-500/20 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100 dark:file:bg-main-900/30 dark:file:text-main-300"
+                                disabled={loading}
+                                className="w-full rounded-xl border border-gray-300/50 bg-white/50 px-4 py-3 text-sm transition-all duration-200 file:mr-4 file:rounded-lg file:border-0 file:bg-main-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-main-700 hover:file:bg-main-100 focus:border-main-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-main-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600/50 dark:bg-gray-700/50 dark:text-gray-100 dark:file:bg-main-900/30 dark:file:text-main-300"
                             />
                         </div>
                     </div>
-
-                    {/* General Error Message */}
 
                     {/* Action Buttons */}
                     <div className="flex justify-end space-x-4 pt-4">
@@ -204,12 +234,13 @@ export default function ProfileForm({ user, userType }: ProfileFormProps) {
                         </Link>
                         <button
                             type="submit"
+                            disabled={loading}
                             className="group relative overflow-hidden rounded-xl bg-gradient-to-r from-main-500 to-main-600 px-8 py-3 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:from-main-600 hover:to-main-700 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
                         >
                             <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
                             <div className="relative flex items-center gap-2">
                                 <Save size={18} />
-                                Save Changes
+                                {loading ? "Saving..." : "Save Changes"}
                             </div>
                         </button>
                     </div>
