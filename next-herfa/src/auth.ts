@@ -23,7 +23,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                 const response: ILoginResponse = await res.json();
                 if (res.ok && response.status === "success") {
                     return {
-                        ...response.data.user,
+                        ...response.data?.user,
                         token: response.token,
                         emailVerified: null,
                     };

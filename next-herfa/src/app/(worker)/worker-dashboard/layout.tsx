@@ -6,9 +6,14 @@ import { auth } from "@/auth";
 
 export default async function Layout({ children }: { children: ReactNode }) {
     const session = await auth();
+    const user = session?.user;
 
     if (!session) {
         redirect("/login");
+    }
+
+    if (user?.role !== "worker") {
+        redirect("/dashboard");
     }
 
     return (

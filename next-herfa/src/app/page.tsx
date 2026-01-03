@@ -5,11 +5,15 @@ import Services from "@/components/landingPage/Services";
 import SliderGallery from "@/components/landingPage/SliderGallery";
 import Team from "@/components/landingPage/Team";
 import Footer from "@/components/landingPage/Footer";
+import { auth } from "@/auth";
 
-function LandingPage() {
+export default async function LandingPage() {
+    const session = await auth();
+    const user = session?.user;
+
     return (
         <>
-            <Header />
+            <Header user={user} />
             <main>
                 <Hero />
                 <About />
@@ -21,5 +25,3 @@ function LandingPage() {
         </>
     );
 }
-
-export default LandingPage;

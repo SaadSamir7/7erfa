@@ -1,14 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Ban } from "lucide-react";
 import Link from "next/link";
 import { login } from "@/lib/actions/auth";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const router = useRouter();
+    const [error, setError] = useState("");
+
+    async function action(formData: FormData) {
+        const res = await login(formData);
+
+        if (res?.error) {
+            setError(res.error);
+            return;
+        }
+
+        router.replace("/worker-dashboard");
+    }
 
     return (
         <div className="w-full max-w-md">
@@ -16,7 +30,7 @@ export default function LoginForm() {
                 <form
                     className="space-y-6 rounded-lg border border-white/20 bg-white p-8 shadow-xl backdrop-blur-sm dark:bg-gray-800"
                     aria-label="Login Form"
-                    action={login}
+                    action={action}
                 >
                     {/* Header Section */}
                     <div className="relative space-y-4 text-center">
@@ -105,6 +119,16 @@ export default function LoginForm() {
                                     )}
                                 </button>
                             </div>
+                        </div>
+
+                        <div>
+                            {error && (
+                                <div className="flex items-center rounded-md bg-red-50 p-4 dark:bg-red-900/20">
+                                    <h3 className="flex items-center gap-2 text-sm font-medium capitalize text-red-800 dark:text-red-400">
+                                        <Ban size={20} /> {error}
+                                    </h3>
+                                </div>
+                            )}
                         </div>
 
                         {/* Remember Me & Forgot Password */}
