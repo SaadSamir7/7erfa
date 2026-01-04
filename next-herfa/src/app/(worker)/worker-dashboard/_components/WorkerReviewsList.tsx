@@ -1,14 +1,9 @@
-import { auth } from "@/auth";
-import { getReviews } from "@/services/apiReviews";
 import { Star } from "lucide-react";
 import Link from "next/link";
 import TestimonialCard from "./TestimonialCard";
+import { IReview } from "@/types/reviews";
 
-async function WorkerReviewsList() {
-    const session = await auth();
-    const user = session?.user;
-    const token = session?.accessToken || "";
-    const reviews = await getReviews(user!.id, token);
+async function WorkerReviewsList({ reviews }: { reviews: IReview[] }) {
     const displayReviews = reviews?.slice(0, 3);
 
     return (

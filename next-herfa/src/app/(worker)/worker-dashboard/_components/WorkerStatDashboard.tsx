@@ -1,12 +1,14 @@
-import { auth } from "@/auth";
-import { getOrders } from "@/services/apiOrders";
+import { WorkerUser } from "@/types/user";
+import { IOrder } from "@/types/orders";
 import { Clock, CircleCheck, Star, X } from "lucide-react";
 
-async function WorkerStatDashboard() {
-    const session = await auth();
-    const user = session?.user;
-    const token = session?.accessToken || "";
-    const orders = await getOrders(token);
+async function WorkerStatDashboard({
+    user,
+    orders,
+}: {
+    user: WorkerUser;
+    orders: IOrder[];
+}) {
     const completedOrders = orders?.filter(
         (order) => order.status === "completed"
     ).length;

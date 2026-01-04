@@ -1,12 +1,8 @@
-import { auth } from "@/auth";
-import { getOrders } from "@/services/apiOrders";
-import { Clock, Calendar } from "lucide-react";
 import Link from "next/link";
+import { IOrder } from "@/types/orders";
+import { Clock, Calendar } from "lucide-react";
 
-async function WorkerTasksDashboard() {
-    const session = await auth();
-    const token = session?.accessToken || "";
-    const orders = await getOrders(token);
+async function WorkerTasksDashboard({ orders }: { orders: IOrder[] }) {
     const displayOrders = orders.slice(0, 3);
 
     return (

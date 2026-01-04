@@ -1,9 +1,6 @@
-import { auth } from "@/auth";
+import { WorkerUser } from "@/types/user";
 
-async function HeaderWorkerDashboard() {
-    const session = await auth();
-    const user = session?.user;
-
+async function HeaderWorkerDashboard({ user }: { user: WorkerUser }) {
     return (
         <div className="relative mb-8 mt-2 overflow-hidden rounded-2xl bg-gradient-to-r from-main-600 via-main-500 to-main-700 p-8 shadow-xl">
             <div className="absolute inset-0 bg-black/10"></div>
