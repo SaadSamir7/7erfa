@@ -39,3 +39,11 @@ export interface ILoginResponse {
     token?: string;
     data?: { user: IUser };
 }
+
+export interface WorkersResponse {
+    status: "success" | "fail" | "error";
+    results: number;
+    data: {
+        data: WorkerUser[];
+    };
+}
