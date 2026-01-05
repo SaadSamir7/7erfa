@@ -38,7 +38,10 @@ export default async function Page({ searchParams }: { searchParams?: Props }) {
         <div className="space-y-6">
             <WorkerOrderHeader ordersNum={orders.length} />
             <WorkerOrdersTable orders={paginatedOrders}>
-                <Pagination count={displayOrders.length} />
+                <Pagination
+                    count={displayOrders.length}
+                    pageSize={PAGE_SIZE_ORDERS}
+                />
             </WorkerOrdersTable>
         </div>
     );

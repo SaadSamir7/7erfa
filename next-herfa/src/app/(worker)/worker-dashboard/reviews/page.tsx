@@ -40,7 +40,10 @@ export default async function Page({ searchParams }: { searchParams?: Props }) {
         <div className="space-y-6">
             <WorkerReviewHeader reviews={reviews} />
             <WorkerReviewsTable reviews={paginatedReviews}>
-                <Pagination count={filteredReviews.length} />
+                <Pagination
+                    count={filteredReviews.length}
+                    pageSize={PAGE_SIZE_ORDERS}
+                />
             </WorkerReviewsTable>
         </div>
     );

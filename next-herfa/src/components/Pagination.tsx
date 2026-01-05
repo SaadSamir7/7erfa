@@ -1,16 +1,15 @@
 "use client";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
 import { useRouter, useSearchParams } from "next/navigation";
-import { PAGE_SIZE_ORDERS } from "@/utils/constants";
 
-function Pagination({ count }: { count: number }) {
+function Pagination({ count, pageSize }: { count: number; pageSize: number }) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const currentPage = !searchParams.get("page")
         ? 1
         : Number(searchParams.get("page"));
 
-    const pageCount = Math.ceil(count / PAGE_SIZE_ORDERS);
+    const pageCount = Math.ceil(count / pageSize);
 
     function nextPage() {
         const next = currentPage === pageCount ? currentPage : currentPage + 1;
@@ -33,13 +32,11 @@ function Pagination({ count }: { count: number }) {
             <p className="ml-2 text-sm text-gray-700 dark:text-gray-300">
                 Showing{" "}
                 <span className="font-semibold text-main-600 dark:text-main-400">
-                    {(currentPage - 1) * PAGE_SIZE_ORDERS + 1}
+                    {(currentPage - 1) * pageSize + 1}
                 </span>{" "}
                 to{" "}
                 <span className="font-semibold text-main-600 dark:text-main-400">
-                    {currentPage === pageCount
-                        ? count
-                        : currentPage * PAGE_SIZE_ORDERS}
+                    {currentPage === pageCount ? count : currentPage * pageSize}
                 </span>{" "}
                 of{" "}
                 <span className="font-semibold text-main-600 dark:text-main-400">
