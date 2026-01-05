@@ -23,12 +23,12 @@ export interface CustomerUser extends BaseUser {
 
 export interface WorkerUser extends BaseUser {
     role: "worker";
-    ratingsAverage?: number;
-    ratingsQuantity?: number;
-    skill?: string;
-    yearsOfExperience?: number;
-    hourlyRate?: number;
-    bio?: string;
+    skill: string;
+    ratingsAverage: number;
+    ratingsQuantity: number;
+    yearsOfExperience: number;
+    hourlyRate: number;
+    bio: string;
 }
 
 export type IUser = CustomerUser | WorkerUser;
