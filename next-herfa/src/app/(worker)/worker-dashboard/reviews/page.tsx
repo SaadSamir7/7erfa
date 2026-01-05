@@ -37,7 +37,7 @@ export default async function Page({ searchParams }: { searchParams?: Props }) {
     const paginatedReviews = filteredReviews.slice(startIndex, endIndex);
 
     return (
-        <div className="mx-6 space-y-6">
+        <div className="space-y-6">
             <WorkerReviewHeader reviews={reviews} />
             <WorkerReviewsTable reviews={paginatedReviews}>
                 <Pagination count={filteredReviews.length} />

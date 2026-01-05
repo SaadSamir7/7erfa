@@ -24,7 +24,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
             <div className="ml-20 flex flex-1 flex-col lg:ml-64">
                 {/* Header Component */}
                 <DashboardHeader user={user} />
-                <main className="min-h-0 flex-1 overflow-hidden bg-gradient-to-br from-orange-50 via-amber-50/30 to-main-50/40 dark:from-gray-900 dark:via-gray-800 dark:to-main-900/20">
+                <main className="min-h-0 flex-1 overflow-hidden bg-gradient-to-br from-orange-50 via-amber-50/30 to-main-50/40 px-2 dark:from-gray-900 dark:via-gray-800 dark:to-main-900/20 md:px-6">
                     <div className="h-full w-full">{children}</div>
                 </main>
             </div>

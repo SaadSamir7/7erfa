@@ -15,7 +15,7 @@ export default async function Page() {
     const reviews = await getReviews(user!.id, token!);
 
     return (
-        <div className="mx-4 min-h-screen bg-gradient-to-br from-orange-50 via-amber-50/30 to-main-50/40 dark:from-gray-900 dark:via-gray-800 dark:to-main-900/20">
+        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50/30 to-main-50/40 dark:from-gray-900 dark:via-gray-800 dark:to-main-900/20">
             <HeaderWorkerDashboard user={user} />
             <WorkerStatDashboard user={user} orders={orders} />
 

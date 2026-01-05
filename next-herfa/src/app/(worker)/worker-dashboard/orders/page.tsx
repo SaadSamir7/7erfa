@@ -35,7 +35,7 @@ export default async function Page({ searchParams }: { searchParams?: Props }) {
     const paginatedOrders = displayOrders.slice(startIndex, endIndex);
 
     return (
-        <div className="mx-6 space-y-6">
+        <div className="space-y-6">
             <WorkerOrderHeader ordersNum={orders.length} />
             <WorkerOrdersTable orders={paginatedOrders}>
                 <Pagination count={displayOrders.length} />

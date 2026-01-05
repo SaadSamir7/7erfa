@@ -106,7 +106,7 @@ export default async function OrderDetailsPage({
     const orderNumber = order.id.slice(-6).toUpperCase();
 
     return (
-        <div className="mx-6 space-y-6 py-6">
+        <div className="space-y-6 py-6">
             <div className="space-y-6 rounded-xl bg-white p-6 shadow-sm dark:bg-gray-800">
                 {/* Order Header */}
                 <div className="flex flex-col items-start justify-between gap-4 border-b pb-6 md:flex-row md:items-center">
@@ -194,7 +194,7 @@ export default async function OrderDetailsPage({
                         <span>Order Details</span>
                     </h4>
                     <div className="rounded-xl bg-gray-50 p-4 dark:bg-gray-700">
-                        <p className="leading-relaxed text-gray-700 dark:text-gray-300 font-semibold">
+                        <p className="font-semibold leading-relaxed text-gray-700 dark:text-gray-300">
                             {order.details ||
                                 "No additional details provided for this order."}
                         </p>
