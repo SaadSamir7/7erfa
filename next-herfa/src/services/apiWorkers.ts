@@ -7,6 +7,11 @@ export async function getWorkers(): Promise<WorkersResponse> {
     return response.json();
 }
 
+export async function getWorkerById(id: string): Promise<WorkersResponse> {
+    const response = await fetch(`${BACKEND_URL}/workers/${id}`);
+    return response.json();
+}
+
 // export async function createWorker(data) {
 //     const response = await fetch(`${API_URL}/workers/signup`, {
 //         method: "POST",

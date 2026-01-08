@@ -42,8 +42,8 @@ export interface ILoginResponse {
 
 export interface WorkersResponse {
     status: "success" | "fail" | "error";
-    results: number;
+    results?: number;
     data: {
-        data: WorkerUser[];
+        data: WorkerUser[] | WorkerUser;
     };
 }

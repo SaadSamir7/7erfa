@@ -15,8 +15,9 @@ export interface IReview {
 
 export interface IReviewsResponse {
     status: "success" | "fail" | "error";
-    results: number;
+    results?: number;
+    message?: string;
     data: {
-        data: IReview[];
+        data: IReview[] | IReview;
     };
 }

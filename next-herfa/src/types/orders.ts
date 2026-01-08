@@ -18,6 +18,7 @@ export interface IOrder {
 
 export interface IOrdersResponse {
     status: "success" | "fail" | "error";
+    message?: string;
     results: number;
     data: {
         orders: IOrder[];
@@ -26,6 +27,7 @@ export interface IOrdersResponse {
 
 export interface IOrderResponse {
     status: "success" | "fail" | "error";
+    message?: string;
     data: {
         order: IOrder;
     };

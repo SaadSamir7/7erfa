@@ -51,17 +51,25 @@ export async function getOrderById(
     }
 }
 
-// export async function makeOrder(data, workerId) {
-//   const response = await fetch(`${API_URL}/workers/${workerId}/orders`, {
-//     method: "POST",
-//     body: JSON.stringify(data),
-//     headers: {
-//       "Content-type": "application/json; charset=UTF-8",
-//       Authorization: `Bearer ${localStorage.getItem("token")}`,
-//     },
-//   });
-//   return response.json();
-// }
+export async function createOrder({
+    data,
+    workerId,
+    token,
+}: {
+    data: { service: string; details: string };
+    workerId: string;
+    token: string;
+}): Promise<IOrderResponse> {
+    const response = await fetch(`${BACKEND_URL}/workers/${workerId}/orders`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.json();
+}
 
 // export async function updateOrderStatus(orderId, status) {
 //   const response = await fetch(`${API_URL}/orders/${orderId}`, {
