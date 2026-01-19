@@ -14,7 +14,7 @@ export default async function LandingPage() {
     return (
         <>
             <Header user={user} />
-            <main>
+            <main className="bg-white">
                 <Hero />
                 <About />
                 <Services />

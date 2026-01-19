@@ -1,9 +1,9 @@
-import RotatingText from './RotatingText'
+import RotatingText from "./RotatingText";
 
 function Hero() {
     return (
         <section
-            className="relative flex h-screen items-center justify-center bg-[url('/hero.jpg')] bg-cover bg-center"
+            className="relative flex h-screen items-center justify-center bg-[url('/hero.webp')] bg-cover bg-center"
             id="hero"
         >
             {/* Clean overlay */}
@@ -27,22 +27,22 @@ function Hero() {
                     <div className="relative">
                         <RotatingText
                             texts={[
-                                'Expert Plumbers',
-                                'Skilled Carpenters',
-                                'Certified Electricians',
-                                'Professional Painters',
-                                'Trusted Handymen',
+                                "Expert Plumbers",
+                                "Skilled Carpenters",
+                                "Certified Electricians",
+                                "Professional Painters",
+                                "Trusted Handymen",
                             ]}
                             mainClassName="text-4xl md:text-5xl lg:text-6xl font-bold text-main-400 min-h-[4rem] flex items-center justify-center"
                             splitLevelClassName="overflow-hidden"
                             elementLevelClassName="inline-block transform-gpu"
-                            initial={{ y: '100%', opacity: 0 }}
+                            initial={{ y: "100%", opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: '-100%', opacity: 0 }}
+                            exit={{ y: "-100%", opacity: 0 }}
                             staggerDuration={0.03}
                             staggerFrom="center"
                             transition={{
-                                type: 'spring',
+                                type: "spring",
                                 damping: 30,
                                 stiffness: 400,
                             }}
@@ -88,7 +88,7 @@ function Hero() {
                 </div>
             </div>
         </section>
-    )
+    );
 }
 
-export default Hero
+export default Hero;
