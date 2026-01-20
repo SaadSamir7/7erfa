@@ -63,13 +63,7 @@ function OrdersTable({
                             );
                         })}
                     </tbody>
-                    <tfoot className="bg-gray-50 dark:bg-gray-700">
-                        <tr>
-                            <td colSpan={7} className="px-6 py-4">
-                                {children}
-                            </td>
-                        </tr>
-                    </tfoot>
+                    {children}
                 </table>
             </div>
         </div>
