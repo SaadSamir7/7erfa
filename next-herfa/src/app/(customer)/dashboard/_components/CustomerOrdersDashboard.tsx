@@ -54,7 +54,7 @@ function CustomerOrdersDashboard({ orders }: { orders: IOrder[] }) {
                     displayOrders?.map((order) => (
                         <Link
                             key={order?.id}
-                            className="group/item cursor-pointer rounded-xl bg-gradient-to-r from-gray-50 to-gray-100/50 p-6 transition-all duration-200 hover:from-main-50 hover:to-main-100/50 hover:shadow-md dark:from-gray-800/50 dark:to-gray-700/30 dark:hover:from-main-900/20 dark:hover:to-main-800/30"
+                            className="group/item block cursor-pointer rounded-xl bg-gradient-to-r from-gray-50 to-gray-100/50 p-6 transition-all duration-200 hover:from-main-50 hover:to-main-100/50 hover:shadow-md dark:from-gray-800/50 dark:to-gray-700/30 dark:hover:from-main-900/20 dark:hover:to-main-800/30"
                             href={`/customer-dashboard/orders/${order?.id}`}
                         >
                             <div className="flex items-start justify-between">
