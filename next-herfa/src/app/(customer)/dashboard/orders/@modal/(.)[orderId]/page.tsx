@@ -15,7 +15,7 @@ import {
     SquareX,
 } from "lucide-react";
 import Link from "next/link";
-import { encryptId } from "@/utils/cryptoUtils";
+import { decryptId, encryptId } from "@/utils/cryptoUtils";
 import { IOrder } from "@/types/orders";
 import { getOrderById, cancelOrder } from "@/services/apiOrders";
 import { useSession } from "next-auth/react";
@@ -42,7 +42,7 @@ export default function OrderDetailsModal() {
                 setLoading(true);
                 setError(null);
                 const fetchedOrder = await getOrderById(
-                    params.orderId as string,
+                    decryptId(params.orderId as string),
                     session.accessToken
                 );
                 setOrder(fetchedOrder);

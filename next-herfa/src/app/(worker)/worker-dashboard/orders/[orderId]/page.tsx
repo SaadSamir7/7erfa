@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { getOrderById } from "@/services/apiOrders";
+import { decryptId } from "@/utils/cryptoUtils";
 import {
     Clock,
     CheckCircle,
@@ -9,6 +10,7 @@ import {
     Calendar,
     Package,
     FileText,
+    BookDown,
 } from "lucide-react";
 
 const getStatusConfig = (
@@ -86,7 +88,8 @@ export default async function OrderDetailsPage({
     const { orderId } = await params;
     const session = await auth();
     const token = session?.accessToken || "";
-    const order = await getOrderById(orderId, token);
+    const decryptedId = decryptId(orderId);
+    const order = await getOrderById(decryptedId, token);
 
     if (!order) {
         return (
@@ -111,6 +114,9 @@ export default async function OrderDetailsPage({
                 {/* Order Header */}
                 <div className="flex flex-col items-start justify-between gap-4 border-b pb-6 md:flex-row md:items-center">
                     <div className="flex items-center space-x-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-main-500 to-main-600 text-lg font-bold text-white shadow-lg">
+                            <BookDown />
+                        </div>
                         <div>
                             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                                 Order #{orderNumber}

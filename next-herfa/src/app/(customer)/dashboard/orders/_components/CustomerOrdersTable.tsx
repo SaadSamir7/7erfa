@@ -1,8 +1,7 @@
-"use client";
-
 import { User, Calendar, Package } from "lucide-react";
 import { IOrder } from "@/types/orders";
 import CustomerOrdersTableRow from "./CustomerOrdersTableRow";
+import { encryptId } from "@/utils/cryptoUtils";
 
 function CustomerOrdersTable({
     orders,
@@ -96,7 +95,7 @@ function CustomerOrdersTable({
                                     <CustomerOrdersTableRow
                                         key={order.id}
                                         order={order}
-                                        orderId={order.id}
+                                        orderId={encryptId(order.id)}
                                     />
                                 );
                             })}

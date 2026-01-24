@@ -1,5 +1,3 @@
-"use client";
-
 import { IOrder } from "@/types/orders";
 import {
     Clock,
@@ -9,7 +7,7 @@ import {
     Calendar,
     Package,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const getStatusColor = (status: string) => {
     switch (status) {
@@ -51,27 +49,38 @@ const getStatusIcon = (status: string) => {
     }
 };
 
-export default function WorkerOrdersTableRow({ order }: { order: IOrder }) {
-    const router = useRouter();
-
+export default function WorkerOrdersTableRow({
+    order,
+    orderId,
+}: {
+    order: IOrder;
+    orderId: string;
+}) {
     return (
         <tr
-            key={order.id}
-            className="hover:from-main-25 group cursor-pointer transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:to-white dark:hover:from-gray-700 dark:hover:to-gray-800"
-            onClick={() => router.push(`/worker-dashboard/orders/${order.id}`)}
+            key={orderId}
+            className="hover:from-main-25 group transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:to-white dark:hover:from-gray-700 dark:hover:to-gray-800"
         >
             <td className="whitespace-nowrap px-6 py-5 text-sm">
-                <div>
-                    <div className="font-semibold capitalize text-gray-900 transition-colors group-hover:text-blue-600 dark:text-white">
-                        {order.customer.name}
+                <Link
+                    href={`/worker-dashboard/orders/${orderId}`}
+                    className="flex items-center space-x-3"
+                >
+                    <div>
+                        <div className="font-semibold capitalize text-gray-900 transition-colors group-hover:text-blue-600 dark:text-white">
+                            {order.customer.name}
+                        </div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                            Customer
+                        </div>
                     </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                        Customer
-                    </div>
-                </div>
+                </Link>
             </td>
             <td className="whitespace-nowrap px-6 py-5 text-sm">
-                <div className="flex items-center space-x-2">
+                <Link
+                    href={`/worker-dashboard/orders/${orderId}`}
+                    className="flex items-center space-x-2"
+                >
                     <Package size={16} className="text-main-500" />
                     <div>
                         <span className="font-semibold capitalize text-gray-900 transition-colors group-hover:text-main-600 dark:text-white">
@@ -81,30 +90,38 @@ export default function WorkerOrdersTableRow({ order }: { order: IOrder }) {
                             Service Type
                         </div>
                     </div>
-                </div>
+                </Link>
             </td>
             <td className="hidden px-6 py-5 text-sm text-gray-600 dark:text-gray-300 lg:table-cell">
-                <div className="max-w-xs">
+                <Link
+                    href={`/worker-dashboard/orders/${orderId}`}
+                    className="block max-w-xs"
+                >
                     <p className="truncate font-medium text-gray-900 transition-colors group-hover:text-gray-700 dark:text-white">
                         {order.details}
                     </p>
                     <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                         Description
                     </p>
-                </div>
+                </Link>
             </td>
             <td className="whitespace-nowrap px-6 py-5">
-                <div
-                    className={`inline-flex items-center space-x-2 rounded-xl border-2 px-3 py-2 ${getStatusColor(order.status)}`}
-                >
-                    {getStatusIcon(order.status)}
-                    <span className="text-sm font-semibold capitalize">
-                        {order.status}
-                    </span>
-                </div>
+                <Link href={`/worker-dashboard/orders/${orderId}`}>
+                    <div
+                        className={`inline-flex items-center space-x-2 rounded-xl border-2 px-3 py-2 ${getStatusColor(order.status)}`}
+                    >
+                        {getStatusIcon(order.status)}
+                        <span className="text-sm font-semibold capitalize">
+                            {order.status}
+                        </span>
+                    </div>
+                </Link>
             </td>
             <td className="whitespace-nowrap px-6 py-5 text-sm">
-                <div className="flex items-center space-x-2">
+                <Link
+                    href={`/worker-dashboard/orders/${orderId}`}
+                    className="flex items-center space-x-2"
+                >
                     <Calendar size={16} className="text-main-500" />
                     <div>
                         <div className="font-semibold text-gray-900 transition-colors group-hover:text-main-600 dark:text-white">
@@ -127,7 +144,7 @@ export default function WorkerOrdersTableRow({ order }: { order: IOrder }) {
                             )}
                         </div>
                     </div>
-                </div>
+                </Link>
             </td>
         </tr>
     );

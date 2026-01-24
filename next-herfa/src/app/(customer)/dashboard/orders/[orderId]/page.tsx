@@ -8,10 +8,12 @@ import {
     Package,
     FileText,
     ArrowLeft,
+    BookUp,
 } from "lucide-react";
 import Link from "next/link";
 import { getOrderById } from "@/services/apiOrders";
 import { auth } from "@/auth";
+import { decryptId } from "@/utils/cryptoUtils";
 
 function getStatusConfig(status: string) {
     switch (status) {
@@ -71,11 +73,12 @@ export default async function OrderDetailsPage({
     const session = await auth();
     const token = session?.accessToken;
     const { orderId } = await params;
-    const order = await getOrderById(orderId, token!);
+    const decryptedId = decryptId(orderId);
+    const order = await getOrderById(decryptedId, token!);
 
     if (!order) {
         return (
-            <div className="min-h-screen bg-gray-50 p-8 dark:bg-gray-900">
+            <div className="min-h-screen p-8">
                 <div className="mx-auto max-w-4xl">
                     <Link
                         href="/dashboard/orders"
@@ -105,7 +108,7 @@ export default async function OrderDetailsPage({
     });
 
     return (
-        <div className="min-h-screen bg-gray-50 p-8 dark:bg-gray-900">
+        <div className="min-h-screen p-8">
             <div className="mx-auto max-w-4xl">
                 {/* Back Button */}
                 <Link
@@ -130,11 +133,11 @@ export default async function OrderDetailsPage({
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-4">
                                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-main-500 to-main-600 text-lg font-bold text-white shadow-lg">
-                                        #{params.orderId}
+                                        <BookUp />
                                     </div>
                                     <div>
                                         <h4 className="text-xl font-bold text-gray-900 dark:text-white">
-                                            Order #{params.orderId}
+                                            Order #{decryptedId.slice(0, 8)}
                                         </h4>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">
                                             Created on {orderDate}

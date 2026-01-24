@@ -1,6 +1,7 @@
 import { IOrder } from "@/types/orders";
 import { User, Calendar, Package } from "lucide-react";
 import WorkerOrdersTableRow from "./WorkerOrdersTableRow";
+import { encryptId } from "@/utils/cryptoUtils";
 
 function OrdersTable({
     orders,
@@ -59,6 +60,7 @@ function OrdersTable({
                                 <WorkerOrdersTableRow
                                     key={order.id}
                                     order={order}
+                                    orderId={encryptId(order.id)}
                                 />
                             );
                         })}
