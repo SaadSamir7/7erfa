@@ -5,8 +5,7 @@ import SearchFilterSort from "./_components/SearchFilterSort";
 import { WORKERS_PAGE_SIZE } from "@/utils/constants";
 import ResultHeader from "./_components/ResultHeader";
 import WorkersGrid from "./_components/WorkersGrid";
-import WorkersPagination from "./_components/WorkersPagination";
-import Pagination from "@/components/Pagination";
+import SearchPagination from "./_components/SearchPagination";
 
 interface Props {
     name?: string;
@@ -29,21 +28,21 @@ export default async function Page({ searchParams }: { searchParams: Props }) {
 
     const currentPage = Number(page);
 
-    console.log("Search Params:", { name, city, category, sort, page });
+    const filteredWorkers = (workers?.data?.data as WorkerUser[]).filter(
+        (worker: WorkerUser) => {
+            const matchesName = worker.name
+                .toLowerCase()
+                .includes(name.toLowerCase());
+            const matchesCity = worker.city
+                .toLowerCase()
+                .includes(city.toLowerCase());
+            const matchesCategory =
+                category === "all" ||
+                worker.skill.toLowerCase() === category.toLowerCase();
 
-    const filteredWorkers = workers?.data?.data.filter((worker) => {
-        const matchesName = worker.name
-            .toLowerCase()
-            .includes(name.toLowerCase());
-        const matchesCity = worker.city
-            .toLowerCase()
-            .includes(city.toLowerCase());
-        const matchesCategory =
-            category === "all" ||
-            worker.skill.toLowerCase() === category.toLowerCase();
-
-        return matchesName && matchesCity && matchesCategory;
-    });
+            return matchesName && matchesCity && matchesCategory;
+        }
+    );
 
     const sortWorkers = (workers: WorkerUser[]) => {
         switch (sort) {
@@ -79,7 +78,7 @@ export default async function Page({ searchParams }: { searchParams: Props }) {
 
     return (
         <>
-            <WorkerSearchHeader workersNum={workers?.results} />
+            <WorkerSearchHeader workersNum={workers?.results as number} />
             <SearchFilterSort />
             <ResultHeader
                 sortedWorkers={sortedWorkers}
@@ -93,12 +92,7 @@ export default async function Page({ searchParams }: { searchParams: Props }) {
                 currentWorkers={currentWorkers}
             />
 
-            <WorkersPagination sortedWorkers={sortedWorkers}>
-                <Pagination
-                    count={sortedWorkers.length}
-                    pageSize={WORKERS_PAGE_SIZE}
-                />
-            </WorkersPagination>
+            <SearchPagination count={sortedWorkers.length} />
         </>
     );
 }
