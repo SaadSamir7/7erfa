@@ -3,7 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { createOrderAction } from "@/lib/actions/createOrder";
+import { createOrderAction } from "@/lib/actions/orders/createOrder";
 
 function SubmitButton() {
     const { pending } = useFormStatus();

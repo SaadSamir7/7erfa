@@ -1,3 +1,5 @@
+import AcceptButton from "@/app/(worker)/worker-dashboard/orders/_components/AcceptButton";
+import CancelButton from "@/app/(worker)/worker-dashboard/orders/_components/CancelButton";
 import { IOrder } from "@/types/orders";
 import {
     Clock,
@@ -6,6 +8,7 @@ import {
     AlertCircle,
     Calendar,
     Package,
+    SquareCheck,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -145,6 +148,25 @@ export default function WorkerOrdersTableRow({
                         </div>
                     </div>
                 </Link>
+            </td>
+            <td className="whitespace-nowrap px-6 py-5 text-sm">
+                {order.status === "completed" && (
+                    <div className="inline-flex items-center space-x-2 rounded-lg bg-green-50 px-4 py-2 text-green-700 ring-1 ring-green-200 dark:bg-green-900/20 dark:text-green-400 dark:ring-green-800">
+                        <SquareCheck size={18} className="shrink-0" />
+                        <span className="text-sm font-medium">Completed</span>
+                    </div>
+                )}
+                {order.status === "canceled" && (
+                    <div className="inline-flex items-center space-x-2 rounded-lg bg-red-50 px-4 py-2 text-red-700 ring-1 ring-red-200 dark:bg-red-900/20 dark:text-red-400 dark:ring-red-800">
+                        <XCircle size={18} className="shrink-0" />
+                        <span className="text-sm font-medium">Canceled</span>
+                    </div>
+                )}
+
+                {(order.status === "in progress" ||
+                    order.status === "pending") && (
+                    <AcceptButton orderId={order.id} status={order.status} />
+                )}
             </td>
         </tr>
     );

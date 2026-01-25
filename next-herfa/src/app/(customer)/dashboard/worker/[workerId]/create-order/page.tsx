@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useFormStatus } from "react-dom";
 import { CalendarArrowUp } from "lucide-react";
-import { createOrderAction } from "@/lib/actions/createOrder";
+import { createOrderAction } from "@/lib/actions/orders/createOrder";
 import { useParams } from "next/navigation";
 
 function SubmitButton() {

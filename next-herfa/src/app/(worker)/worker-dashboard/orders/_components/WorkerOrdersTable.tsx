@@ -1,5 +1,5 @@
 import { IOrder } from "@/types/orders";
-import { User, Calendar, Package } from "lucide-react";
+import { User, Calendar, Package, Handshake } from "lucide-react";
 import WorkerOrdersTableRow from "./WorkerOrdersTableRow";
 import { encryptId } from "@/utils/cryptoUtils";
 
@@ -50,6 +50,15 @@ function OrdersTable({
                                         className="text-main-500"
                                     />
                                     <span>Date</span>
+                                </div>
+                            </th>
+                            <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-200">
+                                <div className="flex items-center space-x-2">
+                                    <Handshake
+                                        size={12}
+                                        className="text-main-500"
+                                    />
+                                    <span>Actions</span>
                                 </div>
                             </th>
                         </tr>

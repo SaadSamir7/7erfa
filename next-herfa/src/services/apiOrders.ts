@@ -71,10 +71,63 @@ export async function createOrder({
     return response.json();
 }
 
-export async function cancelOrder(
-    orderId: string,
-    token: string
-): Promise<IOrderResponse> {
+export async function acceptOrder({
+    orderId,
+    token,
+}: {
+    orderId: string;
+    token: string;
+}): Promise<IOrderResponse> {
+    const response = await fetch(`${BACKEND_URL}/orders/${orderId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ status: "in progress" }),
+
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        const errorData = await response.text();
+        console.error("Accept order failed:", response.status, errorData);
+        throw new Error(`Failed to accept order: ${response.status}`);
+    }
+
+    return response.json();
+}
+
+export async function completeOrder({
+    orderId,
+    token,
+}: {
+    orderId: string;
+    token: string;
+}): Promise<IOrderResponse> {
+    const response = await fetch(`${BACKEND_URL}/orders/${orderId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ status: "completed" }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!response.ok) {
+        const errorData = await response.text();
+        console.error("Complete order failed:", response.status, errorData);
+        throw new Error(`Failed to complete order: ${response.status}`);
+    }
+
+    return response.json();
+}
+
+export async function cancelOrder({
+    orderId,
+    token,
+}: {
+    orderId: string;
+    token: string;
+}): Promise<IOrderResponse> {
     const response = await fetch(`${BACKEND_URL}/orders/${orderId}`, {
         method: "PATCH",
         body: JSON.stringify({ status: "canceled" }),
@@ -92,40 +145,3 @@ export async function cancelOrder(
 
     return response.json();
 }
-
-// export async function updateOrderStatus(orderId, status) {
-//   const response = await fetch(`${API_URL}/orders/${orderId}`, {
-//     method: "PATCH",
-//     body: JSON.stringify({ status }),
-//     headers: {
-//       "Content-type": "application/json; charset=UTF-8",
-//       Authorization: `Bearer ${localStorage.getItem("token")}`,
-//     },
-//   });
-
-//   if (!response.ok) {
-//     const errorData = await response.text();
-//     console.error("Update order failed:", response.status, errorData);
-//     throw new Error(`Failed to update order status: ${response.status}`);
-//   }
-
-//   const result = await response.json();
-//   return result;
-// }
-
-// export async function cancelOrder(orderId) {
-//   const response = await fetch(`${API_URL}/orders/${orderId}`, {
-//     method: "PATCH",
-//     body: JSON.stringify({ status: "canceled" }),
-//     headers: {
-//       "Content-type": "application/json; charset=UTF-8",
-//       Authorization: `Bearer ${localStorage.getItem("token")}`,
-//     },
-//   });
-
-//   if (!response.ok) {
-//     throw new Error("Failed to cancel order");
-//   }
-
-//   return response.json();
-// }
